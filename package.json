@@ -1,0 +1,32 @@
+{
+  "name": "butterfly",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webpack.config.js",
+  "scripts": {
+    "start": "cross-env NODE_ENV=development webpack-dev-server --colors --progress --debug --watch --hot --config webpack.config.dev.js --history-api-fallback --open",
+    "debug": "cross-env NODE_ENV=production webpack -p --watch --colors --progress --config webpack.config.js",
+    "build": "cross-env NODE_ENV=production webpack -p --config webpack.config.js",
+    "test": "cross-env NODE_ENV=test jest-webpack --verbose --no-cache"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/core": "^7.3.4",
+    "@babel/polyfill": "^7.2.5",
+    "@babel/preset-env": "^7.3.4",
+    "babel-loader": "^8.0.5",
+    "css-loader": "^2.1.0",
+    "image-webpack-loader": "^4.6.0",
+    "mini-css-extract-plugin": "^0.5.0",
+    "node-sass": "^4.11.0",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.2.1"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.2"
+  }
+}
