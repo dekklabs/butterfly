@@ -1,14 +1,19 @@
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
+const URL = "https://noticias.dev"
+
 module.exports = {
-  entry: {
-    app: ["@babel/polyfill", "./src/index.js"]
-  },
+  entry: [
+    "webpack-dev-server/client?" + URL + ':5001',
+    "./src/index.js"
+  ],
   output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: "app.bundle.js"
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: URL + ":5001/"
   },
+  mode: 'development',
   module: {
     rules: [
       {
@@ -16,46 +21,51 @@ module.exports = {
         loader: "babel-loader"
       },
       {
-        test: /\.(s*)css$/,
+        test: /\.(scss|sass)$/,
+        exclude: /module\.s?css$/,
         use: [
-          MiniCssExtractPlugin.loader,
-          "css-loader", 
-          "sass-loader"
+            'style-loader',
+            'css-loader',
+            'sass-loader',
         ]
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
       },
       {
         test: /\.(gif|png|jpe?g|svg)$/i,
         use: [
-            {
-                loader: "file-loader",
-                options: {
-                    name: '[name].[ext]',
-                    outputPath: './images/',
-                    esModule: false
-                }
-            },
-            {
-              loader: 'image-webpack-loader',
+          {
+              loader: "file-loader",
               options: {
-                mozjpeg: {
-                  progressive: true,
-                  quality: 65
-                },
-                optipng: {
-                  enabled: false,
-                },
-                pngquant: {
-                  quality: [0.65, 0.90],
-                  speed: 4
-                },
-                gifsicle: {
-                  interlaced: false,
-                },
-                webp: {
-                  quality: 75
-                },
+                  name: '[name].[ext]',
+                  outputPath: './images/',
+                  esModule: false
               }
-            },
+          },
+          {
+            loader: 'image-webpack-loader',
+            options: {
+              mozjpeg: {
+                progressive: true,
+                quality: 65
+              },
+              optipng: {
+                enabled: false,
+              },
+              pngquant: {
+                quality: [0.65, 0.90],
+                speed: 4
+              },
+              gifsicle: {
+                interlaced: false,
+              },
+              webp: {
+                quality: 75
+              },
+            }
+          },
         ],
       },
       {
@@ -73,16 +83,19 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: "app.bundle.css",
-      chunkFilename: '[id].css',
-      ignoreOrder: false
+      filename: "css/app.bundle.css"
     })
   ],
-  performance: {
-    maxEntrypointSize: 400000,
-    maxAssetSize: 100000,
-    assetFilter: (asset) => {
-      return asset.match('entrypoint1.js');
-    }
-  }
+  devServer: {
+    contentBase: path.resolve(__dirname, "dist"),
+    publicPath: URL + ":5001/",
+    port: 3001,
+    hot: true,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET,OPTIONS,HEAD,PUT,POST,DELETE,PATCH',
+      'Access-Control-Allow-Headers': 'Origin, Content-Type, Accept, Authorization, X-Request-With',
+      'Access-Control-Allow-Credentials': 'true',
+    },
+  },
 };
