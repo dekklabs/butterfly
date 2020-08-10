@@ -1,2 +1,3 @@
 # butterfly
-tema de wordpress custom
+- Tema de wordpress custom
+- npm install
